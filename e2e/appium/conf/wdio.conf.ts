@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { AndroidCapabilities } from '../../../typings/android-typings';
+import { APK_PATH, DEVICE_NAME, LOG_PATH, PLATFORM_VERSION } from '../constants';
 
 /**
  * This interface extends from `WebdriverIO.Config` in `@wdio/sync` module, which is
@@ -63,7 +64,7 @@ export const config: WDIOConf = {
     maxInstances: 1,
     //
     // Set directory to store all logs into
-    outputDir: './temp',
+    outputDir: LOG_PATH,
     //
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
@@ -90,9 +91,9 @@ export const config: WDIOConf = {
         */
         automationName: 'UiAutomator2',
         platformName: 'Android',
-        platformVersion: '9',
-        deviceName: 'noop',
-        app: join(process.cwd(), './platforms/android/app/build/outputs/apk/debug/app-debug.apk'),
+        platformVersion: PLATFORM_VERSION,
+        deviceName: DEVICE_NAME,
+        app: APK_PATH,
         browserName: '',
         newCommandTimeout: 240,
         orientation: 'PORTRAIT',
@@ -141,8 +142,8 @@ export const config: WDIOConf = {
     after: (result: number,
         capabilities: any,
         specs: string[]) => {
-        browser.saveRecordingScreen('./temp/video.mp4');
-        browser.stopRecordingScreen();
+
+        browser.saveRecordingScreen(join(LOG_PATH, 'video_' + Date.now() + '.mp4'));
     }
 };
 
