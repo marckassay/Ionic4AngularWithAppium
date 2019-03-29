@@ -1,6 +1,5 @@
-import { join } from 'path';
 import { AndroidCapabilities } from '../../../typings/android-typings';
-import { APK_PATH, DEVICE_NAME, LOG_PATH, PLATFORM_VERSION } from '../constants';
+import { APP, DEVICE_NAME, LOG_PATH, PLATFORM_VERSION } from '../constants';
 
 /**
  * This interface extends from `WebdriverIO.Config` in `@wdio/sync` module, which is
@@ -42,7 +41,7 @@ export const config: WDIOConf = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './e2e/appium/src/**/*.spec.ts',
+        './e2e/appium/src/specs/**/*.spec.ts',
     ],
     //
     // ============
@@ -93,7 +92,7 @@ export const config: WDIOConf = {
         platformName: 'Android',
         platformVersion: PLATFORM_VERSION,
         deviceName: DEVICE_NAME,
-        app: APK_PATH,
+        app: APP.Path,
         browserName: '',
         newCommandTimeout: 240,
         orientation: 'PORTRAIT',
@@ -105,10 +104,10 @@ export const config: WDIOConf = {
         systemPort: 8201,
         autoGrantPermissions: true,
         noSign: true,
-        appPackage: 'io.ionic.starter',
-        appActivity: '.MainActivity',
-        appWaitPackage: 'io.ionic.starter',
-        appWaitActivity: '.MainActivity',
+        appPackage: APP.Package,
+        appActivity: APP.Activity,
+        appWaitPackage: APP.Package,
+        appWaitActivity: APP.Activity,
         autoWebviewTimeout: 4000
     }],
     //
@@ -122,29 +121,4 @@ export const config: WDIOConf = {
     //
     // To see available hooks, view the bottom portion of this configuration file:
     // @ref https://webdriver.io/docs/configurationfile.html
-    /**
-     * Gets executed before test execution begins. At this point you can access to all global
-     * variables like `browser`. It is the perfect place to define custom commands.
-     * @param capabilities list of capabilities details
-     * @param specs List of spec file paths that are to be run
-     */
-    before: (capabilities: any,
-        specs: string[]) => {
-        browser.startRecordingScreen();
-    },
-    /**
-     * Gets executed after all tests are done. You still have access to all global variables from
-     * the test.
-     * @param result 0 - test pass, 1 - test fail
-     * @param capabilities list of capabilities details
-     * @param specs List of spec file paths that ran
-     */
-    after: (result: number,
-        capabilities: any,
-        specs: string[]) => {
-
-        browser.saveRecordingScreen(join(LOG_PATH, 'video_' + Date.now() + '.mp4'));
-    }
 };
-
-
